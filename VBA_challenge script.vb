@@ -35,17 +35,21 @@ For Each ws In Worksheets
 
     For i = 2 To LastRow
 
-'Determine Year Open location for each ticker
+'Determine Year Open value and location for each ticker
         If ws.Cells(i - 1, 1).Value <> ws.Cells(i, 1).Value Then
         Year_Open = ws.Cells(i, 3).Value
 
+            'Omit calculation of percent change when denominator is "0'"
             ElseIf Year_Open = 0 Then
             Percent_Change = 0
 
+            'Extract each unique ticker and Year Close
             ElseIf ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
                 
+                'Each unique ticker will come from...
                 Ticker = ws.Cells(i, 1).Value
 
+                'Year Close will ccome from...
                 Year_Close = ws.Cells(i, 6).Value
 
                 Yearly_Change = Year_Close - Year_Open
@@ -54,7 +58,7 @@ For Each ws In Worksheets
 
                 Volume_Total = Volume_Total + ws.Cells(i, 7).Value
 
-                ' Print the Ticker and Yearly Change in the Summary Table
+                ' Print the Ticker, Yearly Change, Percent Change and Volume Total in the Summary Table
                 ws.Range("I" & Summary_Table_Row).Value = Ticker
 
                 ws.Range("J" & Summary_Table_Row).Value = Yearly_Change
@@ -70,9 +74,6 @@ For Each ws In Worksheets
 
                 'Reset Volume_Total
                 Volume_Total = 0
-
-                'Set Ticker
-                Ticker = ws.Cells(i, 1).Value
 
             Else
 
