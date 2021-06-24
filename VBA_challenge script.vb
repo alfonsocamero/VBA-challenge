@@ -89,30 +89,37 @@ ws.Cells(2, 17).Value = WorksheetFunction.Max(ws.Range("K2:K" & Summary_Table_Ro
 ws.Cells(2, 17).NumberFormat = "0.00%"
 Greatest_Percent_Increase = ws.Cells(2, 17).Value
 
+'Calculate Highest Percent Decrease and assign it to appropriate cell
 ws.Cells(3, 17).Value = WorksheetFunction.Min(ws.Range("K2:K" & Summary_Table_Row))
 ws.Cells(3, 17).NumberFormat = "0.00%"
 Greatest_Percent_Decrease = ws.Cells(3, 17).Value
 
+'Calculate Highest Total Volume and assign it to appropriate cell
 ws.Cells(4, 17).Value = WorksheetFunction.Max(ws.Range("L2:L" & Summary_Table_Row))
 Greatest_Total_Volume = ws.Cells(4, 17).Value
 
-'Create another For Loop to match Highest Percent Increase to corresponing ticker
+'Create another For Loop for color coding Yearly Change and to match Highest Percent Increase to corresponing ticker
     For j = 2 To LastRow
 
+        'Turn cell to red when yearly change is negative
         If ws.Cells(j, 10).Value < 0 Then
         ws.Cells(j, 10).Interior.ColorIndex = 3
 
+        'Turn cell to green when yearly change is positive
         ElseIf ws.Cells(j, 10).Value > 0 Then
         ws.Cells(j, 10).Interior.ColorIndex = 4
 
         End If
         
+        'Grab corresponding ticker for the greatest percent increase and assign it to appropriate cell
         If ws.Cells(j, 11).Value = Greatest_Percent_Increase Then
         ws.Cells(2, 16).Value = ws.Cells(j, 9).Value
 
+        ''Grab corresponding ticker for the greatest percent decrease and assign it to appropriate cell
         ElseIf ws.Cells(j, 11).Value = Greatest_Percent_Decrease Then
         ws.Cells(3, 16).Value = ws.Cells(j, 9).Value
 
+        'Grab corresponding ticker for the greatest total volume and assign it to appropriate cell
         ElseIf ws.Cells(j, 12).Value = Greatest_Total_Volume Then
         ws.Cells(4, 16).Value = ws.Cells(j, 9).Value
 
@@ -120,7 +127,10 @@ Greatest_Total_Volume = ws.Cells(4, 17).Value
 
     Next j
 
+'Autofit all columns
 ws.UsedRange.Columns.AutoFit
+
+'Chnage formating to scientific notation for small summary table 
 ws.Range("Q4").NumberFormat = "0.0000E+00"
 
 Next ws
